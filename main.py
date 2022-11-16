@@ -7,6 +7,7 @@ from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
 import openpyxl
+from shutil import copyfile
 
 
 
@@ -56,6 +57,8 @@ if '__main__' == __name__:
 
     # read_excel("players.xlsx")
 
+    numNotExist = 0
+
     type_arr = ["Black diamond", "Gold", "Silver", "Bronze", "Common"]
 
     book = openpyxl.load_workbook("players.xlsx")
@@ -65,22 +68,33 @@ if '__main__' == __name__:
             continue
         row = list(sheet.rows)[i]
         
-        name = row[0].value
-        country = row[1].value
-        position = row[2].value
+        id = row[0].value
+        name = row[1].value
+        country = row[2].value
+        position = row[3].value
+        number = row[4].value
+
+        # if name.startswith(' '):
+        #     print("start with blank" + name)
+        
+        # if name.endswith(' '):
+        #     print("end with blank" + name)
+
+        # print(str(id) + "\t" + name + "\t" + country + "\t" + position + "\t" + str(number))
 
         for j in range(0, len(type_arr)):
             player_type = type_arr[j]
             # print(i, name, "\t\t\t\t\t\t\t", country, "\t\t\t\t\t\t\t", position, "\t\t\t\t", player_type)
-            image = Image.open("default.png")
-            image = image.convert('RGBA')
-            draw_img(image, name, country, player_type)
-            imageName = "./imgs/" + str(i - 1) + "_" + str(j) + ".png"
-            print(imageName)
-            image.save(imageName)
-            image.close()
+            srcName = "./ball-all/" + name.strip() + "-" + str(j) + ".png"
+            if not os.path.exists(srcName):
+                numNotExist += 1
+                print("File not exist: " + srcName)
+            # imageName = "./imgs/" + str(i) + "_" + str(j + 1) + ".png"
+            # print(imageName)
         
     book.close()
+
+    print(str(numNotExist) + "files are not exist")
 
     # for i in range(0, 5):
     #     image = Image.open("default.png")
