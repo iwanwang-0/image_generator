@@ -89,8 +89,10 @@ if '__main__' == __name__:
             if not os.path.exists(srcName):
                 numNotExist += 1
                 print("File not exist: " + srcName)
-            # imageName = "./imgs/" + str(i) + "_" + str(j + 1) + ".png"
-            # print(imageName)
+                continue
+            targetName = "./imgs/" + str(id) + "_" + str(j + 1) + ".png"
+            copyfile(srcName, targetName)
+            print(targetName)
         
     book.close()
 
